@@ -1,6 +1,6 @@
 """
 This program allows for conversions between resistor values and colour bands in both directions.
-This program only supports 4-band resistors.
+This program only supports 4-band and 5-band resistors.
 """
 
 from utils import input_checker, clear_screen
@@ -41,7 +41,23 @@ def value_to_colour():
     pass
 
 
-def colour_to_value():
+def colour_to_value(colours):
+    """
+
+    :param colours:
+    :type colours: list
+    :return:
+    """
+    bands = []
+    resistance = 0
+    for colour in colours:
+        bands.append(Values(colour))
+    if len(bands) == 4:
+        resistance = bands[2] + 10 * bands[1] + 100 * bands[0]
+    elif len(bands) == 5:
+        resistance = bands[1] + 10 * bands[0]
+    else:
+        raise ValueError("Unsupported number of bands. Only 4 and 5 band resistors are supported.")
     pass
 
 
@@ -53,9 +69,9 @@ def resistor_converter():
               "3: Exit")
         program_mode = input_checker(1, 3)
         if program_mode == 1:
-            value_to_colour()
+            pass
         elif program_mode == 2:
-            colour_to_value()
+            pass
         elif program_mode == 3:
             break
         else:
