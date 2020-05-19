@@ -91,6 +91,14 @@ def color_to_value(colors):
     return resistance, tolerance
 
 
+def value_to_color_human():
+    pass
+
+
+def color_to_value_human():
+    pass
+
+
 def resistor_converter():
     while True:
         print("Select an option:\n"
