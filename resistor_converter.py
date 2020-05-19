@@ -1,5 +1,5 @@
 """
-This program allows for conversions between resistor values and colour bands in both directions.
+This program allows for conversions between resistor values and color bands in both directions.
 This program only supports 4-band and 5-band resistors.
 """
 
@@ -37,35 +37,59 @@ class Tolerances(Enum):
     GRAY = 0.05
 
 
-def value_to_colour():
+def value_to_color():
     pass
 
 
-def colour_to_value(colours):
+def color_to_value(colors):
     """
 
-    :param colours:
-    :type colours: list
+    :param colors: A list containing the color bands of the resistor in order from left to right
+    :type colors: list
     :return:
+       - resistance - The resistance of the resistor
+    :raises ValueError: If the resistor provided contains an invalid number of bands (outside of 4 or 5 bands)
     """
     bands = []
-    resistance = 0
-    for colour in colours:
-        bands.append(Values(colour))
-    if len(bands) == 4:
-        resistance = bands[2] + 10 * bands[1] + 100 * bands[0]
-    elif len(bands) == 5:
-        resistance = bands[1] + 10 * bands[0]
+
+    # Add all of the numerical bands including the multiplier band
+    # Ignoring the last value (len(colors) - 1) since that's the tolerance band to be calculated later
+    for i in range(len(colors) - 1):
+        try:
+            bands.append(Values[colors[i].upper()].value)
+        except KeyError:
+            error_message = "Color in band " + str(i + 1) + " is not a valid resistor band color: " + colors[i].upper()
+            raise ValueError(error_message) from None
+
+    # Look up and store the tolerance (Always the last band for 4 and 5 band resistors)
+    try:
+        tolerance = Tolerances[colors[len(colors) - 1].upper()].value
+    except KeyError:
+        error_message = "Color is not a valid color for the resistance band: " + colors[len(colors) - 1]
+        raise ValueError(error_message) from None
+
+    # Calculate resistor value
+    # 4-band resistors (len = 3 because we don't add the last band to bands)
+    if len(bands) == 3:
+        resistance = 10 * bands[0] + bands[1]
+    # 5-band resistors (len = 4 because we don't add the last band to bands)
+    elif len(bands) == 4:
+        resistance = 100 * bands[0] + 10 * bands[1] + bands[2]
     else:
-        raise ValueError("Unsupported number of bands. Only 4 and 5 band resistors are supported.")
-    pass
+        error_message = "Unsupported number of bands. Only 4 and 5 band resistors are supported."
+        raise ValueError(error_message)
+
+    # Multiply by the multiplier band (Always the 2nd last band for 4 and 5 band resistors)
+    resistance *= 10 ** bands[len(bands) - 1]
+
+    return resistance, tolerance
 
 
 def resistor_converter():
     while True:
         print("Select an option:\n"
-              "1: Value to Colour Bands\n"
-              "2: Colour Bands to Value\n"
+              "1: Value to color Bands\n"
+              "2: color Bands to Value\n"
               "3: Exit")
         program_mode = input_checker(1, 3)
         if program_mode == 1:
@@ -80,4 +104,5 @@ def resistor_converter():
 
 
 if __name__ == '__main__':
-    resistor_converter()
+    print(color_to_value(['red', 'red', 'black', 'black', 'red']))
+    print(color_to_value(['red', 'red', 'brown', 'silver']))
