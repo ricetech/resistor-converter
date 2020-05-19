@@ -5,6 +5,7 @@ This program only supports 4-band and 5-band resistors.
 
 from utils import input_checker, clear_screen
 from enum import Enum
+# noinspection PyUnresolvedReferences
 from typing import Union
 
 
