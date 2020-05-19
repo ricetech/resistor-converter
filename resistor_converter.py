@@ -46,6 +46,7 @@ def color_to_value(colors):
     """
     This function will take a list containing the color bands of a 4 or 5 band resistor in order and then
     calculate the resistance and tolerance of that resistor.
+    The provided list parameter will NOT be modified.
     :param colors: A list containing the color bands of the resistor in order from left to right
     :type colors: list of str
     :return: The resistance and tolerance of the resistor provided.
@@ -59,9 +60,11 @@ def color_to_value(colors):
     # Ignoring the last value (len(colors) - 1) since that's the tolerance band to be calculated later
     for i in range(len(colors) - 1):
         try:
-            bands.append(Values[colors[i].upper()].value)
+            color = colors[i].upper()
+            bands.append(Values[color].value)
         except KeyError:
-            error_message = "Color in band " + str(i + 1) + " is not a valid resistor band color: " + colors[i].upper()
+            # noinspection PyUnboundLocalVariable
+            error_message = "Color in band " + str(i + 1) + " is not a valid resistor band color: " + color
             raise ValueError(error_message) from None
 
     # Look up and store the tolerance (Always the last band for 4 and 5 band resistors)
