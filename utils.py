@@ -36,9 +36,9 @@ def input_checker(min_range, max_range):
                 break
             else:
                 print(">> Error: Input out of range. Valid range is " + str(min_range) + " to " + str(max_range) + ". ")
-                input("Press Enter to try again.")
+                input("Press Enter to try again. ")
         except ValueError:
-            input(">> Error: Input was not a number. Press Enter to try again.")
+            input(">> Error: Input was not a number. Press Enter to try again. ")
     return user_input
 
 
