@@ -68,6 +68,16 @@ def color_to_value(colors):
             error_message = "Color in band " + str(i + 1) + " is not a valid resistor band color: " + color
             raise ValueError(error_message) from None
 
+    # Find the first occurrences of gold and silver to check later
+    try:
+        first_gold = bands.index(-1)
+    except ValueError:
+        first_gold = 99
+    try:
+        first_silver = bands.index(-2)
+    except ValueError:
+        first_silver = 99
+
     # Look up and store the tolerance (Always the last band for 4 and 5 band resistors)
     try:
         tolerance = Tolerances[colors[len(colors) - 1].upper()].value
@@ -78,9 +88,23 @@ def color_to_value(colors):
     # Calculate resistor value
     # 4-band resistors (len = 3 because we don't add the last band to bands)
     if len(bands) == 3:
+        # Raise Error if gold or silver is found in an invalid band
+        if first_gold < 2:
+            raise ValueError("Gold is only valid in Band 3 or 4. Found 'gold' in band " + str(first_gold + 1) + ".")
+        elif first_silver < 2:
+            raise ValueError("Silver is only valid in Band 3 or 4. "
+                             "Found 'silver' in band " + str(first_silver + 1) + ".")
+
         resistance = 10 * bands[0] + bands[1]
     # 5-band resistors (len = 4 because we don't add the last band to bands)
     elif len(bands) == 4:
+        # Raise Error if gold or silver is found in an invalid band
+        if first_gold < 2:
+            raise ValueError("Gold is only valid in Band 4 or 5. Found 'gold' in band " + str(first_gold + 1) + ".")
+        elif first_silver < 2:
+            raise ValueError("Silver is only valid in Band 4 or 5."
+                             " Found 'silver' in band " + str(first_silver + 1) + ".")
+
         resistance = 100 * bands[0] + 10 * bands[1] + bands[2]
     else:
         error_message = "Unsupported number of bands. Only 4 and 5 band resistors are supported."
