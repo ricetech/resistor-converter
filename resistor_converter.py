@@ -72,6 +72,7 @@ def color_to_value(colors):
     try:
         first_gold = bands.index(-1)
     except ValueError:
+        # Use random large value that will satisfy the condition when checking for the first occurrence
         first_gold = 99
     try:
         first_silver = bands.index(-2)
