@@ -96,11 +96,12 @@ def value_to_color_human():
 
 
 def color_to_value_human():
-    repeat = False
+    done = False
     clear_screen()
     print("Color Band to Value Converter\n"
           "Note: When entering colors in this program, the capitalization of the color doesn't matter.")
-    while not repeat:
+
+    while not done:
         while True:
             try:
                 bands_input = input("Enter the colors of the resistor bands from left to right separated by spaces:\n")
@@ -119,12 +120,13 @@ def color_to_value_human():
                 input("Press Enter to try again. ")
                 clear_screen()
 
+        # Prompt to convert another resistor
         while True:
             repeat_input = input("Convert another resistor? (Y/N): ")
             if repeat_input.upper() == "Y":
                 break
             elif repeat_input.upper() == "N":
-                repeat = True
+                done = True
                 break
             else:
                 print(">> Error: Not an option. Enter Y or N.")
