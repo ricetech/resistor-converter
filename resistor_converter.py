@@ -5,6 +5,7 @@ This program only supports 4-band and 5-band resistors.
 
 from utils import input_checker, clear_screen
 from enum import Enum
+from typing import Union
 
 
 class Values(Enum):
@@ -43,12 +44,14 @@ def value_to_color():
 
 def color_to_value(colors):
     """
-
+    This function will take a list containing the color bands of a 4 or 5 band resistor in order and then
+    calculate the resistance and tolerance of that resistor.
     :param colors: A list containing the color bands of the resistor in order from left to right
-    :type colors: list
-    :return:
-       - resistance - The resistance of the resistor
-    :raises ValueError: If the resistor provided contains an invalid number of bands (outside of 4 or 5 bands)
+    :type colors: list of str
+    :return: The resistance and tolerance of the resistor provided.
+    :rtype: (Union[int, float], Union[int, float])
+    :raises ValueError: If the resistor provided contains an invalid number of bands (len(colors) != 4 or 5 bands),
+    or if any of the provided colors are invalid.
     """
     bands = []
 
