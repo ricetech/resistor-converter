@@ -100,7 +100,7 @@ def color_to_value_human():
     done = False
     clear_screen()
     print("Color Band to Value Converter\n"
-          "Note: When entering colors in this program, the capitalization of the color doesn't matter.")
+          ">> Note: When entering colors in this program, the capitalization of the color doesn't matter.")
 
     while not done:
         while True:
@@ -108,23 +108,43 @@ def color_to_value_human():
                 bands_input = input("Enter the colors of the resistor bands from left to right separated by spaces:\n")
                 bands = bands_input.split(' ')
                 if len(bands) == 4 or len(bands) == 5:
+                    # Calculate resistor value
                     resistance, tolerance = color_to_value(bands)
-                    print("Resistor has a value of " + str(resistance) + " ± " + str(tolerance) + " Ω.")
+
+                    # Account for large units
+                    if resistance > 999999999:
+                        resistance //= 1000000000
+                        units = " GΩ (x10^9 Ω)"
+                    elif resistance > 999999:
+                        resistance //= 1000000
+                        units = " MΩ (x10^6 Ω)"
+                    elif resistance > 999:
+                        resistance //= 1000
+                        units = " KΩ (x10^3 Ω)"
+                    else:
+                        units = " Ω"
+
+                    # Print resistor value and tolerance
+                    print("\nResistor value and tolerance:\n" + str(resistance) + units + " ± " + str(tolerance) + " Ω")
                     break
                 else:
                     print(">> Error: This program only supports 4 and 5-band resistors. You provided",
                           len(bands), "band(s):", ', '.join(bands))
                     input("Press Enter to try again. ")
                     clear_screen()
+
+            # Catch and display any errors raised by color_to_value()
             except ValueError as e:
                 print(">> Error:", str(e))
                 input("Press Enter to try again. ")
                 clear_screen()
 
         # Prompt to convert another resistor
+        print()
         while True:
             repeat_input = input("Convert another resistor? (Y/N): ")
             if repeat_input.upper() == "Y":
+                clear_screen()
                 break
             elif repeat_input.upper() == "N":
                 done = True
