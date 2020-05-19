@@ -10,8 +10,8 @@ from typing import Union
 
 
 class Values(Enum):
-    GOLD = -2
-    SILVER = -1
+    SILVER = -2
+    GOLD = -1
     BLACK = 0
     BROWN = 1
     RED = 2
