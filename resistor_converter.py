@@ -71,7 +71,7 @@ def color_to_value(colors):
     try:
         tolerance = Tolerances[colors[len(colors) - 1].upper()].value
     except KeyError:
-        error_message = "Color is not a valid color for the resistance band: " + colors[len(colors) - 1]
+        error_message = "Color is not a valid color for the tolerance band: " + colors[len(colors) - 1]
         raise ValueError(error_message) from None
 
     # Calculate resistor value
