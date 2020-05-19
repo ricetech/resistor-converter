@@ -96,7 +96,40 @@ def value_to_color_human():
 
 
 def color_to_value_human():
-    pass
+    repeat = False
+    clear_screen()
+    print("Color Band to Value Converter\n"
+          "Note: When entering colors in this program, the capitalization of the color doesn't matter.")
+    while not repeat:
+        while True:
+            try:
+                bands_input = input("Enter the colors of the resistor bands from left to right separated by spaces:\n")
+                bands = bands_input.split(' ')
+                if len(bands) == 4 or len(bands) == 5:
+                    resistance, tolerance = color_to_value(bands)
+                    print("Resistor has a value of " + str(resistance) + " ± " + str(tolerance) + " Ω.")
+                    break
+                else:
+                    print(">> Error: This program only supports 4 and 5-band resistors. You provided",
+                          len(bands), "band(s):", ', '.join(bands))
+                    input("Press Enter to try again. ")
+                    clear_screen()
+            except ValueError as e:
+                print(">> Error:", str(e))
+                input("Press Enter to try again. ")
+                clear_screen()
+
+        while True:
+            repeat_input = input("Convert another resistor? (Y/N): ")
+            if repeat_input.upper() == "Y":
+                break
+            elif repeat_input.upper() == "N":
+                repeat = True
+                break
+            else:
+                print(">> Error: Not an option. Enter Y or N.")
+                input("Press Enter to try again. ")
+                clear_screen()
 
 
 def resistor_converter():
@@ -107,16 +140,18 @@ def resistor_converter():
               "3: Exit")
         program_mode = input_checker(1, 3)
         if program_mode == 1:
-            pass
+            print(">> Error: This function is not available yet.")
+            input("Press Enter to try again. ")
+            clear_screen()
         elif program_mode == 2:
-            pass
+            color_to_value_human()
+            clear_screen()
         elif program_mode == 3:
             break
         else:
-            print(">> Error: Invalid option. Press Enter to try again.")
+            print(">> Error: Invalid option. Press Enter to try again. ")
             clear_screen()
 
 
 if __name__ == '__main__':
-    print(color_to_value(['red', 'red', 'black', 'black', 'red']))
-    print(color_to_value(['red', 'red', 'brown', 'silver']))
+    resistor_converter()
