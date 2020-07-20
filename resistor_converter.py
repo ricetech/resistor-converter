@@ -7,6 +7,8 @@ from utils import input_checker, clear_screen
 from enum import Enum
 # noinspection PyUnresolvedReferences
 from typing import Union
+import math
+from decimal import Decimal
 
 
 class Values(Enum):
@@ -37,6 +39,22 @@ class Tolerances(Enum):
     VIOLET = 0.10
     GREY = 0.05
     GRAY = 0.05
+
+
+def round_to_n(x, n):
+    if not x:
+        return 0
+    power = -int(math.floor(math.log10(abs(x)))) + (n - 1)
+    factor = (10 ** power)
+    return round(x * factor) / factor
+
+
+def not_quite_scientific_notation(x):
+    s = "{:.2E}".format(Decimal(round_to_n(x, 3)))
+    v = s.split("E")
+    a = int(float(v[0]) * 100)
+    b = int(v[1])-2
+    return a, b
 
 
 def value_to_color():
@@ -202,4 +220,7 @@ def resistor_converter():
 
 
 if __name__ == '__main__':
+    x = 1
+    y = not_quite_scientific_notation(x)
+    print(y)
     resistor_converter()
